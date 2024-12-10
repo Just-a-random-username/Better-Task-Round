@@ -19,7 +19,7 @@ Download the repository in your desired directory by running the command
 
 Download the required python libraries :-
 ```
-pip install torch transformers streamlit
+pip install -r requirements.txt
 ```
 
 Run the code using :-
