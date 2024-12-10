@@ -1,12 +1,19 @@
 import streamlit as st
 from transformers import AutoModelForCausalLM, AutoTokenizer
+import torch 
 model_name = "Qwen/Qwen2.5-Coder-1.5B-Instruct"
+
+
+device = 'cpu'
+if torch.cuda.is_available():
+    device = 'cuda:0'
+
 
 st.title(" Better - Task Round")
 model = AutoModelForCausalLM.from_pretrained(
     model_name,
     torch_dtype="bfloat16",
-    device_map="cuda:0"
+    device_map=device
 )
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
@@ -21,7 +28,7 @@ def generate(conv):
         tokenize=False,
         add_generation_prompt=True
     )
-    model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
+    model_inputs = tokenizer([text], return_tensors="pt").to(device)
 
     generated_ids = model.generate(
         **model_inputs,
